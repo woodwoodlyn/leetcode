@@ -1,0 +1,24 @@
+class Solution:
+    # @param A, a list of integers
+    # @return an integer
+    def trap(self, A):
+        maxnum = 0
+        maxindexstart = 0
+        for i in range(len(A)):     #find the maxnumindex
+            if A[i] >= maxnum:
+                maxnum = A[i]
+                maxindexstart =  i     
+        sumnum = 0
+        maxnum = 0
+        for i in A[:maxindexstart+1]:
+            if i > maxnum:
+                maxnum = i
+            else:
+                sumnum += maxnum - i
+        maxnum = 0
+        for i in A[-1:-(len(A)-maxindexstart):-1]:
+            if i > maxnum:
+                maxnum = i
+            else:
+                sumnum += maxnum - i
+        return sumnum
