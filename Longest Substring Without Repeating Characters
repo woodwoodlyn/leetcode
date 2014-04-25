@@ -1,0 +1,50 @@
+Longest Substring Without Repeating Characters Total Accepted: 12111 Total Submissions: 54095 My Submissions
+Given a string, find the length of the longest substring without repeating characters. 
+For example, the longest substring without repeating letters for "abcabcbb" is "abc", 
+which the length is 3. For "bbbbb" the longest substring is "b", with the length of 1.
+
+#Solution1
+class Solution:
+    # @return an integer
+    def lengthOfLongestSubstring(self, s):
+        charlist = [0]*256
+        longest = ''
+        temp = ''
+        startindex = 0
+        for i in range(len(s)):
+            if charlist[ord(s[i])-1] == 0:
+                charlist[ord(s[i])-1] = i+1
+                temp += s[i]
+            else:
+                if len(temp) > len(longest):
+                    longest = temp
+                temp = s[charlist[ord(s[i])-1]:i+1]
+                cash =charlist[ord(s[i])-1]
+                for j in s[startindex:charlist[ord(s[i])-1]]:
+                    charlist[ord(j)-1] = 0
+                startindex = cash
+                charlist[ord(s[i])-1] = i+1
+        if len(temp) > len(longest):
+            longest = temp
+        return len(longest)
+
+
+#Solution2
+class Solution:
+    # @return an integer
+    def lengthOfLongestSubstring(self, s):
+        length = len(s)
+        if length == 0:
+            return 0
+        CharCountList = [-1]*256
+        startindex = 0
+        maxlen = 1
+        endindex = 1
+        CharCountList[ord(s[startindex])] = 0
+        while endindex < length:
+            if CharCountList[ord(s[endindex])] >= startindex:   #Nice idea,Has not reached a duplicate char
+                startindex = CharCountList[ord(s[endindex])]+1
+            maxlen = max(maxlen,endindex - startindex + 1)
+            CharCountList[ord(s[endindex])] =  endindex
+            endindex += 1
+        return maxlen
